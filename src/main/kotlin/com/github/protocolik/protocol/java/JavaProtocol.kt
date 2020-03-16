@@ -1,0 +1,196 @@
+package com.github.protocolik.protocol.java
+
+import com.github.protocolik.api.protocol.Packet
+import com.github.protocolik.api.protocol.PacketType
+import com.github.protocolik.api.protocol.Protocol
+import com.github.protocolik.api.protocol.ProtocolVersion
+import com.github.protocolik.protocol.java.handshaking.HandshakingServerboundSetProtocolPacket
+import com.github.protocolik.protocol.java.login.clientbound.*
+import com.github.protocolik.protocol.java.login.serverbound.LoginServerboundEncryptionResponsePacket
+import com.github.protocolik.protocol.java.login.serverbound.LoginServerboundLoginStartPacket
+import com.github.protocolik.protocol.java.login.serverbound.LoginServerboundPluginResponsePacket
+import com.github.protocolik.protocol.java.play.clientbound.PlayClientboundChatPacket
+import com.github.protocolik.protocol.java.play.clientbound.PlayClientboundChunkDataPacket
+import com.github.protocolik.protocol.java.play.clientbound.PlayClientboundJoinGamePacket
+import com.github.protocolik.protocol.java.play.clientbound.PlayClientboundUnloadChunkPacket
+import com.github.protocolik.protocol.java.play.clientbound.entity.PlayClientboundEntityAnimationPacket
+import com.github.protocolik.protocol.java.play.clientbound.entity.PlayClientboundEntityPositionPacket
+import com.github.protocolik.protocol.java.play.clientbound.entity.PlayClientboundEntityPositionRotationPacket
+import com.github.protocolik.protocol.java.play.clientbound.player.PlayClientboundPlayerPositionRotationPacket
+import com.github.protocolik.protocol.java.play.clientbound.spawn.PlayClientboundSpawnEntityExperienceOrbPacket
+import com.github.protocolik.protocol.java.play.clientbound.spawn.PlayClientboundSpawnEntityPacket
+import com.github.protocolik.protocol.java.play.clientbound.spawn.PlayClientboundSpawnEntityPaintingPacket
+import com.github.protocolik.protocol.java.play.clientbound.spawn.PlayClientboundSpawnEntityWeatherPacket
+import com.github.protocolik.protocol.java.play.clientbound.world.PlayClientboundWorldTimePacket
+import com.github.protocolik.protocol.java.play.serverbound.PlayServerboundChatPacket
+import com.github.protocolik.protocol.java.play.serverbound.player.PlayServerboundPlayerInteractEntityPacket
+import com.github.protocolik.protocol.java.play.serverbound.player.PlayServerboundPlayerPositionPacket
+import com.github.protocolik.protocol.java.status.clientbound.StatusClientboundPongPacket
+import com.github.protocolik.protocol.java.status.clientbound.StatusClientboundResponsePacket
+import com.github.protocolik.protocol.java.status.serverbound.StatusServerboundPingPacket
+import com.github.protocolik.protocol.java.status.serverbound.StatusServerboundRequestPacket
+
+@Suppress("UNCHECKED_CAST")
+fun <T : Packet> Protocol.createPacket(protocolVersion: ProtocolVersion, id: Int): T? {
+    val packetType = get(protocolVersion)
+    return packetType[id]?.createPacket() as T?
+}
+
+fun PacketType.createPacket(): Packet = when (this) {
+    PacketType.HANDSHAKING_SERVERBOUND_SET_PROTOCOL -> HandshakingServerboundSetProtocolPacket()
+    PacketType.HANDSHAKING_SERVERBOUND_LEGACY_SERVER_LIST_PING -> TODO()
+    PacketType.STATUS_CLIENTBOUND_RESPONSE -> StatusClientboundResponsePacket()
+    PacketType.STATUS_CLIENTBOUND_PONG -> StatusClientboundPongPacket()
+    PacketType.STATUS_SERVERBOUND_REQUEST -> StatusServerboundRequestPacket()
+    PacketType.STATUS_SERVERBOUND_PING -> StatusServerboundPingPacket()
+    PacketType.LOGIN_CLIENTBOUND_DISCONNECT -> LoginClientboundDisconnectPacket()
+    PacketType.LOGIN_CLIENTBOUND_ENCRYPTION_REQUEST -> LoginClientboundEncryptionRequestPacket()
+    PacketType.LOGIN_CLIENTBOUND_SUCCESS -> LoginClientboundSuccessPacket()
+    PacketType.LOGIN_CLIENTBOUND_SET_COMPRESSION -> LoginClientboundSetCompressionPacket()
+    PacketType.LOGIN_CLIENTBOUND_PLUGIN_REQUEST -> LoginClientboundPluginRequestPacket()
+    PacketType.LOGIN_SERVERBOUND_LOGIN_START -> LoginServerboundLoginStartPacket()
+    PacketType.LOGIN_SERVERBOUND_ENCRYPTION_RESPONSE -> LoginServerboundEncryptionResponsePacket()
+    PacketType.LOGIN_SERVERBOUND_PLUGIN_RESPONSE -> LoginServerboundPluginResponsePacket()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY -> PlayClientboundSpawnEntityPacket()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY_EXPERIENCE_ORB -> PlayClientboundSpawnEntityExperienceOrbPacket()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY_WEATHER -> PlayClientboundSpawnEntityWeatherPacket()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY_LIVING -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY_PAINTING -> PlayClientboundSpawnEntityPaintingPacket()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_ENTITY_PLAYER -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_ANIMATION -> PlayClientboundEntityAnimationPacket()
+    PacketType.PLAY_CLIENTBOUND_STATISTICS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_ACTION_ACK -> TODO()
+    PacketType.PLAY_CLIENTBOUND_BLOCK_BREAK_ANIMATION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_TILE_ENTITY_DATA -> TODO()
+    PacketType.PLAY_CLIENTBOUND_BLOCK_ACTION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_BLOCK_CHANGE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_BOSS_BAR -> TODO()
+    PacketType.PLAY_CLIENTBOUND_DIFFICULTY -> TODO()
+    PacketType.PLAY_CLIENTBOUND_CHAT -> PlayClientboundChatPacket()
+    PacketType.PLAY_CLIENTBOUND_MULTI_BLOCK_CHANGE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_TAB_COMPLETE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_DECLARE_COMMANDS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WINDOW_CONFIRMATION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WINDOW_CLOSE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WINDOW_ITEMS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WINDOW_PROPERTY -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SET_SLOT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SET_COOLDOWN -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLUGIN_MESSAGE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAY_SOUND -> TODO()
+    PacketType.PLAY_CLIENTBOUND_DISCONNECT -> LoginClientboundDisconnectPacket()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_STATUS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_EXPLOSION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_UNLOAD_CHUNK -> PlayClientboundUnloadChunkPacket()
+    PacketType.PLAY_CLIENTBOUND_NOTIFY_CLIENT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_OPEN_HORSE_WINDOW -> TODO()
+    PacketType.PLAY_CLIENTBOUND_KEEP_ALIVE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_CHUNK_DATA -> PlayClientboundChunkDataPacket()
+    PacketType.PLAY_CLIENTBOUND_WORLD_EVENT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WORLD_PARTICLE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_UPDATE_LIGHT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_JOIN_GAME -> PlayClientboundJoinGamePacket()
+    PacketType.PLAY_CLIENTBOUND_MAP_DATA -> TODO()
+    PacketType.PLAY_CLIENTBOUND_TRADE_LIST -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_POSITION -> PlayClientboundEntityPositionPacket()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_POSITION_ROTATION -> PlayClientboundEntityPositionRotationPacket()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_ROTATION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_MOVEMENT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_VEHICLE_MOVE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_OPEN_BOOK -> TODO()
+    PacketType.PLAY_CLIENTBOUND_OPEN_WINDOW -> TODO()
+    PacketType.PLAY_CLIENTBOUND_OPEN_SIGN_EDITOR -> TODO()
+    PacketType.PLAY_CLIENTBOUND_RECIPE_RESPONSE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_ABILITIES -> TODO()
+    PacketType.PLAY_CLIENTBOUND_BED -> TODO()
+    PacketType.PLAY_CLIENTBOUND_COMBAT_EVENT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_LIST_ENTRY -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_FACING -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_POSITION_ROTATION -> PlayClientboundPlayerPositionRotationPacket()
+    PacketType.PLAY_CLIENTBOUND_UNLOCK_RECIPES -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_DESTROY -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_REMOVE_EFFECT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_RESOURCE_PACK_SEND -> TODO()
+    PacketType.PLAY_CLIENTBOUND_RESPAWN -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_HEAD_ROTATION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SELECT_ADVANCEMENT_TAB -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WORLD_BORDER -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SWITCH_CAMERA -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_CHANGE_HELD_ITEM_SLOT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_UPDATE_VIEW_POSITION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_UPDATE_VIEW_DISTANCE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SCOREBOARD_DISPLAY_OBJECTIVE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_METADATA -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_ATTACH -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_VELOCITY -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_EQUIPMENT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_SET_EXPERIENCE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_HEALTH -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SCOREBOARD_OBJECTIVE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_SET_PASSENGERS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SCOREBOARD_TEAM -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SCOREBOARD_SCORE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SPAWN_POSITION -> TODO()
+    PacketType.PLAY_CLIENTBOUND_WORLD_TIME -> PlayClientboundWorldTimePacket()
+    PacketType.PLAY_CLIENTBOUND_TITLE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_SOUND_EFFECT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_SOUND_EFFECT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_STOP_SOUND -> TODO()
+    PacketType.PLAY_CLIENTBOUND_PLAYER_LIST_DATA -> TODO()
+    PacketType.PLAY_CLIENTBOUND_NBT_RESPONSE -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_COLLECT_ITEM -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_TELEPORT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ADVANCEMENTS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_ATTRIBUTES -> TODO()
+    PacketType.PLAY_CLIENTBOUND_ENTITY_EFFECT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_DECLARE_RECIPES -> TODO()
+    PacketType.PLAY_CLIENTBOUND_DECLARE_TAGS -> TODO()
+    PacketType.PLAY_CLIENTBOUND_UPDATE_ENTITY_NBT -> TODO()
+    PacketType.PLAY_CLIENTBOUND_CHUNK_BULK -> TODO()
+    PacketType.PLAY_SERVERBOUND_TELEPORT_CONFIRM -> TODO()
+    PacketType.PLAY_SERVERBOUND_BLOCK_NBT_REQUEST -> TODO()
+    PacketType.PLAY_SERVERBOUND_SET_DIFFICULTY -> TODO()
+    PacketType.PLAY_SERVERBOUND_CHAT -> PlayServerboundChatPacket()
+    PacketType.PLAY_SERVERBOUND_REQUEST -> TODO()
+    PacketType.PLAY_SERVERBOUND_SETTINGS -> TODO()
+    PacketType.PLAY_SERVERBOUND_TAB_COMPLETE -> TODO()
+    PacketType.PLAY_SERVERBOUND_WINDOW_CONFIRMATION -> TODO()
+    PacketType.PLAY_SERVERBOUND_WINDOW_BUTTON_CLICK -> TODO()
+    PacketType.PLAY_SERVERBOUND_WINDOW_CLICK -> TODO()
+    PacketType.PLAY_SERVERBOUND_WINDOW_CLOSE -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLUGIN_MESSAGE -> TODO()
+    PacketType.PLAY_SERVERBOUND_EDIT_BOOK -> TODO()
+    PacketType.PLAY_SERVERBOUND_ENTITY_NBT_REQUEST -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_INTERACT_ENTITY -> PlayServerboundPlayerInteractEntityPacket()
+    PacketType.PLAY_SERVERBOUND_KEEP_ALIVE -> TODO()
+    PacketType.PLAY_SERVERBOUND_LOCK_DIFFICULTY -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_POSITION -> PlayServerboundPlayerPositionPacket()
+    PacketType.PLAY_SERVERBOUND_PLAYER_POSITION_ROTATION -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_ROTATION -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_MOVEMENT -> TODO()
+    PacketType.PLAY_SERVERBOUND_VEHICLE_MOVE -> TODO()
+    PacketType.PLAY_SERVERBOUND_STEER_BOAT -> TODO()
+    PacketType.PLAY_SERVERBOUND_PICK_ITEM -> TODO()
+    PacketType.PLAY_SERVERBOUND_RECIPE_REQUEST -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_ABILITIES -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_ACTION -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_STATE -> TODO()
+    PacketType.PLAY_SERVERBOUND_STEER_VEHICLE -> TODO()
+    PacketType.PLAY_SERVERBOUND_RECIPE_DATA -> TODO()
+    PacketType.PLAY_SERVERBOUND_NAME_ITEM -> TODO()
+    PacketType.PLAY_SERVERBOUND_RESOURCE_PACK_STATUS -> TODO()
+    PacketType.PLAY_SERVERBOUND_ADVANCEMENT_TAB -> TODO()
+    PacketType.PLAY_SERVERBOUND_SELECT_TRADE -> TODO()
+    PacketType.PLAY_SERVERBOUND_SET_BEACON_EFFECT -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_CHANGE_HELD_ITEM_SLOT -> TODO()
+    PacketType.PLAY_SERVERBOUND_UPDATE_COMMAND_BLOCK -> TODO()
+    PacketType.PLAY_SERVERBOUND_UPDATE_COMMAND_BLOCK_MINECART -> TODO()
+    PacketType.PLAY_SERVERBOUND_CREATIVE_INVENTORY_ACTION -> TODO()
+    PacketType.PLAY_SERVERBOUND_UPDATE_JIGSAW_BLOCK -> TODO()
+    PacketType.PLAY_SERVERBOUND_UPDATE_STRUCTURE_BLOCK -> TODO()
+    PacketType.PLAY_SERVERBOUND_UPDATE_SIGN -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_ARM_ANIMATION -> TODO()
+    PacketType.PLAY_SERVERBOUND_SPECTATE -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_PLACE_BLOCK -> TODO()
+    PacketType.PLAY_SERVERBOUND_PLAYER_USE_ITEM -> TODO()
+}
