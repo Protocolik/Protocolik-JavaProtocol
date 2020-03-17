@@ -11,6 +11,7 @@ import com.github.protocolik.mojang.api.Profile
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.JsonPrimitive
 import io.netty.buffer.ByteBuf
 import java.util.*
 
@@ -65,7 +66,7 @@ constructor(
                     }
                 })
             }
-            val description = JsonParser().parse(response.description)
+            val description = JsonPrimitive(response.description)
             val favicon = response.favicon
 
             add("version", version)
